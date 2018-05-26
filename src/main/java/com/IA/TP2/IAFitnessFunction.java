@@ -11,4 +11,10 @@ public class IAFitnessFunction extends FitnessFunction {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+	
+	public static int amountOfChange(JourneyChromosome a_potentialSolution )
+    {
+		int successJourneys = a_potentialSolution.getSuccessJourneys();
+		return successJourneys - a_potentialSolution.countAnimalOnRightSide();
+    }
 }
