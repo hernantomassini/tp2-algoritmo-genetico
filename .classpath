@@ -23,5 +23,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/Hernan/Desktop/Espacio de programacion/Repositorios/IA-TP2/libs/jgap.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
