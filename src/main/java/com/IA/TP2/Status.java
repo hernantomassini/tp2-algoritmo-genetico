@@ -5,5 +5,7 @@ public enum Status {
 		TWOLIONS,
 		ONEBUEY,
 		TWOBUEYS,	    
-	    LIONANDBUEY, 
+	    LIONANDBUEY;
+
+
 }
