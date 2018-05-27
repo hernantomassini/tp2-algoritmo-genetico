@@ -17,6 +17,14 @@ public enum JourneyStatus {
             else
                 function.moveLionsFromLeft(1);
         }
+
+        @Override
+        public void rollBack(boolean isEven, IAFitnessFunction function) {
+            if (isEven)
+                function.moveLionsFromLeft(1);
+            else
+                function.moveLionsFromRight(1);
+        }
     },
     ONE_BUFFALO(2) {
         @Override
@@ -25,6 +33,14 @@ public enum JourneyStatus {
                 function.moveBuffalosFromRight(1);
             else
                 function.moveBuffalosFromLeft(1);
+        }
+
+        @Override
+        public void rollBack(boolean isEven, IAFitnessFunction function) {
+            if (isEven)
+                function.moveBuffalosFromLeft(1);
+            else
+                function.moveBuffalosFromRight(1);
         }
     },
     TWO_LIONS(3) {
@@ -35,6 +51,14 @@ public enum JourneyStatus {
             else
                 function.moveLionsFromLeft(2);
         }
+
+        @Override
+        public void rollBack(boolean isEven, IAFitnessFunction function) {
+            if (isEven)
+                function.moveLionsFromLeft(2);
+            else
+                function.moveLionsFromRight(2);
+        }
     },
     TWO_BUFFALOS(4) {
         @Override
@@ -43,6 +67,14 @@ public enum JourneyStatus {
                 function.moveBuffalosFromRight(2);
             else
                 function.moveBuffalosFromLeft(2);
+        }
+
+        @Override
+        public void rollBack(boolean isEven, IAFitnessFunction function) {
+            if (isEven)
+                function.moveBuffalosFromLeft(2);
+            else
+                function.moveBuffalosFromRight(2);
         }
     },
     ONE_LION_ONE_BUFFALO(5) {
@@ -56,9 +88,21 @@ public enum JourneyStatus {
                 function.moveBuffalosFromLeft(1);
             }
         }
+
+        @Override
+        public void rollBack(boolean isEven, IAFitnessFunction function) {
+            if (isEven) {
+                function.moveLionsFromLeft(1);
+                function.moveBuffalosFromLeft(1);
+            }else {
+                function.moveLionsFromRight(1);
+                function.moveBuffalosFromRight(1);
+            }
+        }
     };
 
     public abstract void evaluate(boolean isEven, IAFitnessFunction function);
+    public abstract void rollBack(boolean isEven, IAFitnessFunction function);
 
     private int value;
 

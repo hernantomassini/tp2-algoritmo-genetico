@@ -4,12 +4,12 @@ import org.jgap.*;
 import org.jgap.impl.DefaultConfiguration;
 import org.jgap.impl.IntegerGene;
 
-/**
- * Hello world!
- */
+
 public class App {
 
     public static void main(String[] args) throws Exception{
+
+        Configuration.reset();
         Configuration conf = new DefaultConfiguration();
         conf.setPreservFittestIndividual(true);
         conf.setKeepPopulationSizeConstant(false);
@@ -21,19 +21,12 @@ public class App {
         int lowerBounds = 1;
         int upperBounds = 5;
 
-        int populationSize = 10000;
+        int populationSize = 10;
 
         conf.setFitnessFunction(fitnessFunction);
 
-        /*
-        * 1. 1 leon
-        * 2. 1 bufalo
-        * 3. 2 leones
-        * 4. 2 bufalos
-        * 5. 1 leon y 1 bufalo
-         */
         Gene[] sampleGenes = new Gene[20];
-        for (int i = 0; i<20; i++)
+        for (int i = 0; i < 20; i++)
             sampleGenes[i] = new IntegerGene(conf, lowerBounds, upperBounds);
 
         IChromosome sampleChromosome = new Chromosome(conf, sampleGenes);
@@ -51,19 +44,30 @@ public class App {
         }
 
         IChromosome bestSolutionSoFar = population.getFittestChromosome();
-
+        IAFitnessFunction function = new IAFitnessFunction();
+        System.out.println("Population: " + populationSize);
         System.out.println("The best solution has a fitness value of " + bestSolutionSoFar.getFitnessValue());
         bestSolutionSoFar.setFitnessValueDirectly(-1);
-        IAFitnessFunction function = new IAFitnessFunction();
-        System.out.println("Successful journeys: " + function.getSuccessJourneys(bestSolutionSoFar));
+        int successfulJournies = function.getSuccessJourneys(bestSolutionSoFar);
+        System.out.println("Successful journeys: " + successfulJournies);
         System.out.println("Is solution? " + function.isSolution());
         System.out.println("Right buffalos: " + function.getBuffalosRight());
         System.out.println("Right lions: " + function.getLionsRight());
         System.out.println("Left buffalos: " + function.getBuffalosLeft());
         System.out.println("Left lions: " + function.getLionsLeft());
+        System.out.println();
+        System.out.println("Flow:\n");
+        printArray(bestSolutionSoFar.getGenes(), successfulJournies);
     }
 
-    public static boolean uniqueChromosomes(Population a_pop) {
+    private static void printArray(Gene[] genes, int successfulJournies){
+        for (int i = 1; i<=successfulJournies; i++) {
+            System.out.println("Trip: " + i);
+            System.out.println("Boat: " + JourneyStatus.get((Integer) genes[i-1].getAllele()));
+        }
+    }
+
+    private static boolean uniqueChromosomes(Population a_pop) {
         for(int i=0;i<a_pop.size()-1;i++) {
             IChromosome c = a_pop.getChromosome(i);
             for(int j=i+1;j<a_pop.size();j++) {
