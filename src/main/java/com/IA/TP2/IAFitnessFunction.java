@@ -44,7 +44,7 @@ public class IAFitnessFunction extends FitnessFunction {
 
 		solutionValue = 0;
 
-		int retries = 200;
+		int retries = 5;
 
 		while(successTravels<20){
 			Integer geneStatus = (Integer) genes[successTravels].getAllele();
@@ -58,12 +58,13 @@ public class IAFitnessFunction extends FitnessFunction {
 				successTravels++;
 				retries = 5;
 			}else{
-				journeyStatus.rollBack(isEven, this);
-				if (retries > 0) {
-					genes[successTravels].setAllele(new Random().nextInt(4) + 1);
-					retries--;
-				}else
-					break;
+//				journeyStatus.rollBack(isEven, this);
+//				if (retries > 0) {
+//					genes[successTravels].setAllele(new Random().nextInt(4) + 1);
+////					retries--;
+//				}else
+//					break;
+				break;
 			}
 
 			if (isSolution()){

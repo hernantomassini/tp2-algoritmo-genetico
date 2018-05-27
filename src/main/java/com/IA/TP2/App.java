@@ -21,7 +21,7 @@ public class App {
         int lowerBounds = 1;
         int upperBounds = 5;
 
-        int populationSize = 10;
+        int populationSize = 500;
 
         conf.setFitnessFunction(fitnessFunction);
 
