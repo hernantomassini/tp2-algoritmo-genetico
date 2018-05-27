@@ -1,30 +1,25 @@
 package com.IA.TP2;
 
 import org.jgap.FitnessFunction;
-import org.jgap.Gene;
 import org.jgap.IChromosome;
-
-import java.util.Random;
 
 public class IAFitnessFunction extends FitnessFunction {
 
-	private int a_targetChangeAmount;
+	private int rightLions;
+	private int rightBuffalos;
+	private int leftLions;
+	private int leftBuffalos;
 
-	private int lionsRight = 3;
-	private int buffalosRight = 3;
-	private int lionsLeft = 0;
-	private int buffalosLeft = 0;
-
-	private int solutionValue = 0;
+	private int solutionValue;
 
 	@Override
 	protected double evaluate(IChromosome chromosome) {
 		try {
-			int magicNumber = 10;
+			int incrementalSolutionValue = 10;
 
 			int successJourneys = this.getSuccessJourneys(chromosome);
-			int leftValue = (this.lionsLeft + this.buffalosLeft) * magicNumber;
-			int rightValue = (this.lionsRight + this.buffalosRight);
+			int leftValue = (this.leftLions + this.leftBuffalos) * incrementalSolutionValue;
+			int rightValue = (this.rightLions + this.rightBuffalos);
 
 			return Math.max(leftValue - rightValue - successJourneys + solutionValue, 0);
 		}catch (Exception ex){
@@ -35,37 +30,23 @@ public class IAFitnessFunction extends FitnessFunction {
     public int getSuccessJourneys(IChromosome a_potentialSolution) throws Exception{
 		int successTravels = 0;
 
-		Gene[] genes = a_potentialSolution.getGenes();
-
-		lionsRight = 3;
-		buffalosRight = 3;
-		lionsLeft = 0;
-		buffalosLeft = 0;
+		rightLions = 3;
+		rightBuffalos = 3;
+		leftLions = 0;
+		leftBuffalos = 0;
 
 		solutionValue = 0;
 
-		int retries = 5;
-
 		while(successTravels<20){
-			Integer geneStatus = (Integer) genes[successTravels].getAllele();
-
-			boolean isEven = isEven(successTravels);
+			Integer geneStatus = (Integer) a_potentialSolution.getGene(successTravels).getAllele();
 
 			JourneyStatus journeyStatus = JourneyStatus.get(geneStatus);
-			journeyStatus.evaluate(isEven, this);
+			journeyStatus.evaluate(isEven(successTravels), this);
 
-			if (validState()) {
+			if (validState())
 				successTravels++;
-				retries = 5;
-			}else{
-//				journeyStatus.rollBack(isEven, this);
-//				if (retries > 0) {
-//					genes[successTravels].setAllele(new Random().nextInt(4) + 1);
-////					retries--;
-//				}else
-//					break;
+			else
 				break;
-			}
 
 			if (isSolution()){
 				this.solutionValue = 500;
@@ -81,14 +62,14 @@ public class IAFitnessFunction extends FitnessFunction {
 	}
 
 	public boolean isSolution(){
-		return this.buffalosRight == 0 && this.lionsRight == 0 && this.lionsLeft == 3 && this.buffalosLeft == 3;
+		return this.rightBuffalos == 0 && this.rightLions == 0 && this.leftLions == 3 && this.leftBuffalos == 3;
 	}
 
 	private boolean validState(){
-		return (this.buffalosLeft == 0 || this.lionsLeft <= this.buffalosLeft)
-				&& (this.lionsRight <= this.buffalosRight || this.buffalosRight == 0)
-				&& this.validAmount(this.buffalosRight) && this.validAmount(this.buffalosLeft)
-				&& this.validAmount(this.lionsLeft) && this.validAmount(this.lionsRight);
+		return (this.leftBuffalos == 0 || this.leftLions <= this.leftBuffalos)
+				&& (this.rightLions <= this.rightBuffalos || this.rightBuffalos == 0)
+				&& this.validAmount(this.rightBuffalos) && this.validAmount(this.leftBuffalos)
+				&& this.validAmount(this.leftLions) && this.validAmount(this.rightLions);
 	}
 
 	private boolean validAmount(int quantity){
@@ -96,38 +77,38 @@ public class IAFitnessFunction extends FitnessFunction {
 	}
 
 	public void moveBuffalosFromRight(int quantity){
-		this.buffalosRight = this.buffalosRight - quantity;
-		this.buffalosLeft = this.buffalosLeft + quantity;
+		this.rightBuffalos = this.rightBuffalos - quantity;
+		this.leftBuffalos = this.leftBuffalos + quantity;
 	}
 
 	public void moveLionsFromRight(int quantity){
-		this.lionsRight = this.lionsRight - quantity;
-		this.lionsLeft = this.lionsLeft + quantity;
+		this.rightLions = this.rightLions - quantity;
+		this.leftLions = this.leftLions + quantity;
 	}
 
 	public void moveBuffalosFromLeft(int quantity){
-		this.buffalosRight = this.buffalosRight + quantity;
-		this.buffalosLeft = this.buffalosLeft - quantity;
+		this.rightBuffalos = this.rightBuffalos + quantity;
+		this.leftBuffalos = this.leftBuffalos - quantity;
 	}
 
 	public void moveLionsFromLeft(int quantity){
-		this.lionsRight = this.lionsRight + quantity;
-		this.lionsLeft = this.lionsLeft - quantity;
+		this.rightLions = this.rightLions + quantity;
+		this.leftLions = this.leftLions - quantity;
 	}
 
-	public int getLionsRight() {
-		return lionsRight;
+	public int getRightLions() {
+		return rightLions;
 	}
 
-	public int getBuffalosRight() {
-		return buffalosRight;
+	public int getRightBuffalos() {
+		return rightBuffalos;
 	}
 
-	public int getLionsLeft() {
-		return lionsLeft;
+	public int getLeftLions() {
+		return leftLions;
 	}
 
-	public int getBuffalosLeft() {
-		return buffalosLeft;
+	public int getLeftBuffalos() {
+		return leftBuffalos;
 	}
 }

@@ -8,7 +8,6 @@ import org.jgap.impl.IntegerGene;
 public class App {
 
     public static void main(String[] args) throws Exception{
-
         Configuration.reset();
         Configuration conf = new DefaultConfiguration();
         conf.setPreservFittestIndividual(true);
@@ -21,7 +20,7 @@ public class App {
         int lowerBounds = 1;
         int upperBounds = 5;
 
-        int populationSize = 500;
+        int populationSize = 1000;
 
         conf.setFitnessFunction(fitnessFunction);
 
@@ -51,10 +50,10 @@ public class App {
         int successfulJournies = function.getSuccessJourneys(bestSolutionSoFar);
         System.out.println("Successful journeys: " + successfulJournies);
         System.out.println("Is solution? " + function.isSolution());
-        System.out.println("Right buffalos: " + function.getBuffalosRight());
-        System.out.println("Right lions: " + function.getLionsRight());
-        System.out.println("Left buffalos: " + function.getBuffalosLeft());
-        System.out.println("Left lions: " + function.getLionsLeft());
+        System.out.println("Right buffalos: " + function.getRightBuffalos());
+        System.out.println("Right lions: " + function.getRightLions());
+        System.out.println("Left buffalos: " + function.getLeftBuffalos());
+        System.out.println("Left lions: " + function.getLeftLions());
         System.out.println();
         System.out.println("Flow:\n");
         printArray(bestSolutionSoFar.getGenes(), successfulJournies);
